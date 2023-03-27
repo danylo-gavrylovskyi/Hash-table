@@ -8,11 +8,31 @@ public class StringsDictionary
 
     private int NumItems = 0;
 
-    private LinkedList RezisingArray()
+    private void RezisingArray()
     {
         this.InitialSize *= 2;
         LinkedList[] NewBuckets = new LinkedList[InitialSize];
-        return NewBuckets;
+
+        foreach (var Array in NewBuckets)
+        {
+            if (Array)
+            {
+                foreach (var item in Array)
+                {
+                    int index = CalculateHash(item, NewBuckets.Length);
+                    if (NewBuckets[index])
+                    {
+                        NewBuckets[index].Push([item[0], item[1]]);
+                    }
+                    else
+                    {
+                        NewBuckets[index] = [[item[0], item[1]]];
+                    }
+                }
+            }
+        }
+
+        this.buckets = NewBuckets;
     }
 
     public void Add(string key, string value)
@@ -20,9 +40,9 @@ public class StringsDictionary
         this.NumItems++;
         double LoadFactor = this.NumItems/ this.InitialSize;
 
-        if (LoadFactor > .8)
+        if (LoadFactor > 0.8)
         {
-            //resize array
+            this.RezisingArray();
         }
 
         int index = CalculateHash(key, this.buckets.Length());
