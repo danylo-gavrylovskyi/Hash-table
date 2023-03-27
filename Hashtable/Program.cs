@@ -1,10 +1,19 @@
-﻿public class StringsDictionary
+﻿using System.Runtime.CompilerServices;
+
+public class StringsDictionary
 {
-    private const int InitialSize = 10;
+    private int InitialSize = 10;
 
     private LinkedList[] buckets = new LinkedList[InitialSize];
 
     private int NumItems = 0;
+
+    private LinkedList RezisingArray()
+    {
+        this.InitialSize *= 2;
+        LinkedList[] NewBuckets = new LinkedList[InitialSize];
+        return NewBuckets;
+    }
 
     public void Add(string key, string value)
     {
