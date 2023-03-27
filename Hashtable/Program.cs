@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 public class StringsDictionary
 {
@@ -52,13 +53,21 @@ public class StringsDictionary
         }
         else
         {
-            this.buckets[index] = [[key, value]];
+            this.buckets[index] = [[key, value]]; // To avoid collisions
         }
     }
 
     public void Remove(string key)
     {
-
+        int index = CalculateHash(key, this.buckets.Length());
+        if (!this.buckets[index])
+        {
+            throw new Exception("There is no such key to delete");
+        }
+        else
+        {
+            this.buckets.RemoveByKey(key); // Believe that linked list have such function
+        }
     }
 
     public string Get(string key)
