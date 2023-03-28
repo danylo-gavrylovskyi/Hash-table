@@ -1,7 +1,17 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-Console.WriteLine("Solution to error");
+string PathToFile = "C:\\Users\\danya\\Hash-table\\Hashtable\\dictionary.txt";
+var Lines = File.ReadAllLines(PathToFile);
+StringsDictionary Dictionary = new StringsDictionary();
+
+for (int i = 0; i < Lines.Length; i++)
+{
+    var KeyValue = Lines[i].Split("; ");
+    string Word = KeyValue[0];
+    string Defenition = KeyValue[1];
+    Dictionary.Add(Word, Defenition);
+}
 
 public class StringsDictionary
 {
@@ -18,7 +28,7 @@ public class StringsDictionary
         this.InitialSizeCheck = NewInitialSize;
         LinkedList[] NewBuckets = new LinkedList[NewInitialSize];
 
-        for (int i = 0; i < NewInitialSize; i++)
+        for (int i = 0; i < NewInitialSize/2; i++)
         {
             NewBuckets[i] = this.buckets[i];
         }
