@@ -1,9 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
+Console.WriteLine("Solution to error");
+
 public class StringsDictionary
 {
-    private int InitialSize = 10;
+    private const int InitialSize = 10;
+    private int InitialSizeCheck = InitialSize;
 
     private LinkedList[] buckets = new LinkedList[InitialSize];
 
@@ -11,26 +14,13 @@ public class StringsDictionary
 
     private void RezisingArray()
     {
-        this.InitialSize *= 2;
-        LinkedList[] NewBuckets = new LinkedList[InitialSize];
+        int NewInitialSize = InitialSize * 2;
+        this.InitialSizeCheck = NewInitialSize;
+        LinkedList[] NewBuckets = new LinkedList[NewInitialSize];
 
-        foreach (var Array in NewBuckets)
+        for (int i = 0; i < NewInitialSize; i++)
         {
-            if (Array)
-            {
-                foreach (var item in Array)
-                {
-                    int index = CalculateHash(item, NewBuckets.Length);
-                    if (NewBuckets[index])
-                    {
-                        NewBuckets[index].Push([item[0], item[1]]);
-                    }
-                    else
-                    {
-                        NewBuckets[index] = [[item[0], item[1]]];
-                    }
-                }
-            }
+            NewBuckets[i] = this.buckets[i];
         }
 
         this.buckets = NewBuckets;
@@ -39,52 +29,45 @@ public class StringsDictionary
     public void Add(string key, string value)
     {
         this.NumItems++;
-        double LoadFactor = this.NumItems/ this.InitialSize;
+        double LoadFactor = this.NumItems / this.InitialSizeCheck;
 
         if (LoadFactor > 0.8)
         {
             this.RezisingArray();
         }
 
-        int index = CalculateHash(key, this.buckets.Length());
-        if (buckets[index])
+        int index = CalculateHash(key, this.buckets.Length);
+        if (buckets[index] == null)
         {
-            this.buckets[index].Push([key, value]);
+            this.buckets[index] = new LinkedList();
         }
-        else
-        {
-            this.buckets[index] = [[key, value]]; // To avoid collisions
-        }
+        this.buckets[index].Add(new KeyValuePair(key, value));
     }
 
     public void Remove(string key)
     {
-        int index = CalculateHash(key, this.buckets.Length());
-        if (!this.buckets[index])
+        int index = CalculateHash(key, this.buckets.Length);
+        if (this.buckets[index] == null)
         {
             throw new Exception("There is no such key to delete");
         }
         else
         {
-            this.buckets.RemoveByKey(key); // Believe that linked list have such function
+            this.buckets[index].RemoveByKey(key);
         }
     }
 
     public string Get(string key)
     {
-        int index = CalculateHash(key, this.buckets.Length());
+        int index = CalculateHash(key, this.buckets.Length);
 
-        if (!buckets[index])
+        if (buckets[index] == null)
         {
-            return "Error! There is no such key";
+            throw new Exception("Error! There is no such key to get");
         }
-
-        for (int i = 0; i < buckets[index].Length(); i++)
+        else
         {
-            if (i[0] == key)
-            {
-                return buckets[index][i][1];
-            }
+            return this.buckets[index].GetItemWithKey(key).Value;
         }
     }
 
@@ -93,12 +76,12 @@ public class StringsDictionary
     {
         int hash = 19;
 
-        for (int i = 0; i < key.Length(); i++)
+        for (int i = 0; i < key.Length; i++)
         {
             hash *= (15 * hash * key[i]) % tableLength;
         }
 
-        return hash
+        return hash;
     }
 }
 
