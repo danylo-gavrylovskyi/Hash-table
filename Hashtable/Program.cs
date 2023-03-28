@@ -13,6 +13,8 @@ for (int i = 0; i < Lines.Length; i++)
     Dictionary.Add(Word, Defenition);
 }
 
+Console.WriteLine(Dictionary.Get("A"));
+
 public class StringsDictionary
 {
     private const int InitialSize = 10;
@@ -41,10 +43,10 @@ public class StringsDictionary
         this.NumItems++;
         double LoadFactor = this.NumItems / this.InitialSizeCheck;
 
-        if (LoadFactor > 0.8)
-        {
-            this.RezisingArray();
-        }
+        //if (LoadFactor > 0.8)
+        //{
+        //    this.RezisingArray();
+        //}
 
         int index = CalculateHash(key, this.buckets.Length);
         if (buckets[index] == null)
@@ -88,10 +90,10 @@ public class StringsDictionary
 
         for (int i = 0; i < key.Length; i++)
         {
-            hash *= (15 * hash * key[i]) % tableLength;
+            hash += (15 * key[i]) ;
         }
 
-        return hash;
+        return hash % tableLength;
     }
 }
 
@@ -170,10 +172,23 @@ public class LinkedList
         }
         while (cur_node.Next != null)
         {
-            Console.WriteLine(cur_node.Pair.Key);
+            //Console.WriteLine(cur_node.Pair.Key);
             cur_node = cur_node.Next;
         }
     }
-    // public KeyValuePair GetItemWithKey(string key) функция выше это тоже самое что и эта функция только с принтом
-  
+    
+    public KeyValuePair GetItemWithKey(string key)
+    {
+        LinkedListNode CurrentNode = _first;
+        while (CurrentNode.Next != null)
+        {
+            if (CurrentNode.Pair.Key == key)
+            {
+                break;
+            }
+            CurrentNode = CurrentNode.Next;
+        }
+
+        return CurrentNode.Pair;
+    }
 }
