@@ -13,7 +13,7 @@ for (int i = 0; i < Lines.Length; i++)
     Dictionary.Add(Word, Defenition);
 }
 
-Console.WriteLine(Dictionary.Get("A"));
+Console.WriteLine(Dictionary.Get("MUREXAN"));
 
 public class StringsDictionary
 {
@@ -26,16 +26,27 @@ public class StringsDictionary
 
     private void RezisingArray()
     {
-        int NewInitialSize = InitialSize * 2;
-        this.InitialSizeCheck = NewInitialSize;
-        LinkedList[] NewBuckets = new LinkedList[NewInitialSize];
-
-        for (int i = 0; i < NewInitialSize/2; i++)
+        int newSize = this.buckets.Length * 2;
+        LinkedList[] newBuckets = new LinkedList[newSize];
+        foreach (LinkedList bucket in this.buckets)
         {
-            NewBuckets[i] = this.buckets[i];
-        }
+            if (bucket == null) continue;
 
-        this.buckets = NewBuckets;
+            LinkedListNode currentNode = bucket._first;
+
+            while (currentNode != null)
+            {
+                int newIndex = CalculateHash(currentNode.Pair.Key, newSize);
+                if (newBuckets[newIndex] == null)
+                {
+                    newBuckets[newIndex] = new LinkedList();
+                }
+                newBuckets[newIndex].Add(currentNode.Pair);
+                currentNode = currentNode.Next;
+            }
+        }
+        this.buckets = newBuckets;
+        this.InitialSizeCheck = newSize;
     }
 
     public void Add(string key, string value)
@@ -43,10 +54,10 @@ public class StringsDictionary
         this.NumItems++;
         double LoadFactor = this.NumItems / this.InitialSizeCheck;
 
-        //if (LoadFactor > 0.8)
-        //{
-        //    this.RezisingArray();
-        //}
+        if (LoadFactor > 0.8)
+        {
+            this.RezisingArray();
+        }
 
         int index = CalculateHash(key, this.buckets.Length);
         if (buckets[index] == null)
@@ -125,7 +136,7 @@ public class LinkedListNode
 
 public class LinkedList
 {
-    private LinkedListNode _first;
+    public LinkedListNode _first;
 
     public void Add(KeyValuePair pair)
     {
@@ -172,7 +183,7 @@ public class LinkedList
         }
         while (cur_node.Next != null)
         {
-            //Console.WriteLine(cur_node.Pair.Key);
+            Console.WriteLine(cur_node.Pair.Key);
             cur_node = cur_node.Next;
         }
     }
