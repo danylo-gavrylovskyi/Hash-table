@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-
-string PathToFile = "C:\\Users\\danya\\Hash-table\\Hashtable\\dictionary.txt";
+﻿string PathToFile = "C:\\Users\\danya\\Hash-table\\Hashtable\\dictionary.txt";
 var Lines = File.ReadAllLines(PathToFile);
 StringsDictionary Dictionary = new StringsDictionary();
 
@@ -13,7 +10,18 @@ for (int i = 0; i < Lines.Length; i++)
     Dictionary.Add(Word, Defenition);
 }
 
-Console.WriteLine(Dictionary.Get("MUREXAN"));
+while (true)
+{
+    Console.WriteLine("Enter your word: ");
+    string UserWord = Console.ReadLine();
+    if (UserWord == null)
+    {
+        break;
+    }
+    Console.WriteLine(Dictionary.Get(UserWord));
+}
+
+//Console.WriteLine(Dictionary.Get("MUREXAN"));
 
 public class StringsDictionary
 {
@@ -101,9 +109,10 @@ public class StringsDictionary
 
         for (int i = 0; i < key.Length; i++)
         {
-            hash += (15 * key[i]) ;
+            hash += (15 * key[i]);
         }
 
+        //Console.WriteLine($"{hash} + { hash % tableLength}");
         return hash % tableLength;
     }
 }
@@ -170,20 +179,6 @@ public class LinkedList
                 break;
             }
             prev_node = cur_node;
-            cur_node = cur_node.Next;
-        }
-    }
-
-    public void Print()
-    {
-        var cur_node = _first;
-        if (cur_node == null)
-        {
-            return;
-        }
-        while (cur_node.Next != null)
-        {
-            Console.WriteLine(cur_node.Pair.Key);
             cur_node = cur_node.Next;
         }
     }
