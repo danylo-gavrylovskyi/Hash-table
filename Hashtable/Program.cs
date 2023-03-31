@@ -14,7 +14,7 @@ while (true)
 {
     Console.WriteLine("Enter your word: ");
     string UserWord = Console.ReadLine();
-    if (UserWord == null)
+    if (UserWord == "close")
     {
         break;
     }
@@ -105,11 +105,11 @@ public class StringsDictionary
 
     private int CalculateHash(string key, int tableLength)
     {
-        int hash = 19;
+        int hash = 0;
 
         for (int i = 0; i < key.Length; i++)
         {
-            hash += (15 * key[i]);
+            hash += Convert.ToInt16(key[i]) + Convert.ToInt16(key[i]) + 234535;
         }
 
         //Console.WriteLine($"{hash} + { hash % tableLength}");
@@ -190,11 +190,11 @@ public class LinkedList
         {
             if (CurrentNode.Pair.Key == key)
             {
-                break;
+                return CurrentNode.Pair;
             }
             CurrentNode = CurrentNode.Next;
         }
 
-        return CurrentNode.Pair;
+        return new KeyValuePair("Check your word", "There is no definition for this word");
     }
 }
