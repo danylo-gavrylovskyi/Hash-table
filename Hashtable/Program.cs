@@ -109,7 +109,7 @@ public class StringsDictionary
 
         for (int i = 0; i < key.Length; i++)
         {
-            hash += Convert.ToInt16(key[i]) + Convert.ToInt16(key[i]) + 234535;
+            hash += Convert.ToInt16(key[i]) + Convert.ToInt16(key[i]) + 7;
         }
 
         //Console.WriteLine($"{hash} + { hash % tableLength}");
